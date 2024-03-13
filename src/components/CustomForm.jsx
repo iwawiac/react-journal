@@ -1,7 +1,5 @@
-/* eslint-disable react/prop-types */
-import { useState } from "react";
-
-// library imports
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
 const CustomForm = ({ addTask }) => {
@@ -10,6 +8,22 @@ const CustomForm = ({ addTask }) => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [comment, setComment] = useState("");
+  const [activities, setActivities] = useState([]); // State to store activities
+
+  // Fetch activities from the API on component mount
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const response = await axios.get(
+          "http://192.168.0.194:8080/RedGroupTask/activities/"
+        );
+        setActivities(response.data); // Set activities state with fetched data
+      } catch (error) {
+        console.error("Error fetching activities:", error);
+      }
+    };
+    fetchActivities();
+  }, []);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -71,20 +85,23 @@ const CustomForm = ({ addTask }) => {
           End Time
         </label>
       </div>
+
       <div className="wrapper">
-        <input
-          type="text"
-          id="task"
-          className="input"
+        <select
           value={task}
           onChange={(e) => setTask(e.target.value)}
+          className="input"
           required
-          autoFocus
-          maxLength={60}
-          placeholder="Enter Task"
-        />
-        <label htmlFor="task" className="label">
-          Task
+        >
+          <option value="">Select Task</option>
+          {activities.map((activity) => (
+            <option key={activity.id} value={activity.name}>
+              {activity.name}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="activity" className="label">
+          Activity
         </label>
       </div>
 
