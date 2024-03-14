@@ -5,7 +5,6 @@ import axios from "axios";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
 const UserForm = ({
-  addUser,
   selectedUser,
   selectedDate,
   setSelectedUser,
@@ -29,8 +28,6 @@ const UserForm = ({
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // Implement your form submission logic here
-    addUser(); // Call the addUser function passed from the App component
   };
 
   return (

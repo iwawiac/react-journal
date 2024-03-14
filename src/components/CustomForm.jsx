@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
-const CustomForm = ({ addTask }) => {
+const CustomForm = () => {
   const [task, setTask] = useState("");
   const [startDate, setStartDate] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -25,23 +25,7 @@ const CustomForm = ({ addTask }) => {
     fetchActivities();
   }, []);
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const newTask = {
-      name: task,
-      date: startDate,
-      startTime: startTime,
-      endTime: endTime,
-      comment: comment,
-      id: Date.now(),
-    };
-    addTask(newTask);
-    setTask("");
-    setStartDate("");
-    setStartTime("");
-    setEndTime("");
-    setComment("");
-  };
+  const handleFormSubmit = (e) => {};
 
   return (
     <form className="todo" onSubmit={handleFormSubmit}>
