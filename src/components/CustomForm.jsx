@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
-const CustomForm = () => {
+const CustomForm = ({ selectedUser }) => {
   const [task, setTask] = useState("");
   const [startDate, setStartDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [comment, setComment] = useState("");
-  const [activities, setActivities] = useState([]); // State to store activities
+  const [activities, setActivities] = useState([]);
 
   // Fetch activities from the API on component mount
   useEffect(() => {
@@ -17,7 +17,7 @@ const CustomForm = () => {
         const response = await axios.get(
           "http://192.168.0.194:8080/RedGroupTask/activities/"
         );
-        setActivities(response.data); // Set activities state with fetched data
+        setActivities(response.data);
       } catch (error) {
         console.error("Error fetching activities:", error);
       }
@@ -25,7 +25,43 @@ const CustomForm = () => {
     fetchActivities();
   }, []);
 
-  const handleFormSubmit = (e) => {};
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:8080/RedGroupTask/api/journal/", {
+        userId: selectedUser,
+        activityId: task,
+        comment: comment,
+        start: {
+          date: {
+            year: new Date(startDate).getFullYear(),
+            month: new Date(startDate).getMonth() + 1,
+            day: new Date(startDate).getDate(),
+          },
+          time: {
+            hour: parseInt(startTime.split(":")[0]),
+            minute: parseInt(startTime.split(":")[1]),
+            second: 0,
+          },
+        },
+        end: {
+          date: {
+            year: new Date(startDate).getFullYear(),
+            month: new Date(startDate).getMonth() + 1,
+            day: new Date(startDate).getDate(),
+          },
+          time: {
+            hour: parseInt(endTime.split(":")[0]),
+            minute: parseInt(endTime.split(":")[1]),
+            second: 0,
+          },
+        },
+      });
+      // Optionally, you can fetchTasks or perform any other action after successful submission
+    } catch (error) {
+      console.error("Error submitting task:", error);
+    }
+  };
 
   return (
     <form className="todo" onSubmit={handleFormSubmit}>
@@ -79,7 +115,7 @@ const CustomForm = () => {
         >
           <option value="">Select Task</option>
           {activities.map((activity) => (
-            <option key={activity.id} value={activity.name}>
+            <option key={activity.id} value={activity.id}>
               {activity.name}
             </option>
           ))}

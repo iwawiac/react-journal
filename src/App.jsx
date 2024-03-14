@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import Axios for making HTTP requests
 
 // Custom components
@@ -42,7 +42,6 @@ function App() {
         selectedDate={selectedDate}
         setSelectedUser={setSelectedUser}
         setSelectedDate={setSelectedDate}
-        // addUser={fetchTasks}
       />
       <header>
         <h1>Register new activity for the selected user</h1>
@@ -51,8 +50,8 @@ function App() {
         selectedUser={selectedUser}
         selectedDate={selectedDate}
         fetchTasks={fetchTasks}
-      />{" "}
-      {/* Pass fetchTasks function to CustomForm */}
+        setSelectedUser={setSelectedUser} // Pass setSelectedUser to reset selected user after form submission
+      />
       <header>
         <h1>List of activities</h1>
       </header>
