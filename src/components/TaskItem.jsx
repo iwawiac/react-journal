@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
+import { API_BASE_URL } from "./apiConfig";
 
 import styles from "./TaskItem.module.css";
 
@@ -39,13 +40,11 @@ const TaskItem = ({ task, onDelete, selectedUser, fetchTasks }) => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(
-        `http://192.168.0.194:8080/RedGroupTask/api/journal/${task.id}`
-      );
+      await axios.delete(`${API_BASE_URL}journal/${task.id}`);
+      fetchTasks();
     } catch (error) {
       console.error("Error deleting task:", error);
     }
-    fetchTasks();
   };
 
   const handleUpdate = async () => {
@@ -82,13 +81,9 @@ const TaskItem = ({ task, onDelete, selectedUser, fetchTasks }) => {
         },
       };
 
-      await axios.put(
-        `http://192.168.0.194:8080/RedGroupTask/api/journal/${task.id}`,
-        updatedTask
-      );
+      await axios.put(`${API_BASE_URL}journal/${task.id}`, updatedTask);
 
       console.log("Updated task:", updatedTask);
-      // window.location.reload();
       setEditMode(false);
       fetchTasks();
     } catch (error) {

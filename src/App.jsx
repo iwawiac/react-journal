@@ -6,6 +6,7 @@ import axios from "axios"; // Import Axios for making HTTP requests
 import UserForm from "./components/UserForm";
 import CustomForm from "./components/CustomForm";
 import TaskList from "./components/TaskList";
+import { API_BASE_URL } from "./components/apiConfig";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -25,7 +26,7 @@ function App() {
     if (selectedUser && selectedDate) {
       try {
         const response = await axios.get(
-          `http://192.168.0.194:8080/RedGroupTask/api/journal/user-id/${selectedUser}/date/${selectedDate}`
+          `${API_BASE_URL}journal/user-id/${selectedUser}/date/${selectedDate}`
         );
         setTasks(response.data); // Assuming the response data is an array of tasks
       } catch (error) {

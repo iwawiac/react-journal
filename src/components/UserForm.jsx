@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react"; // Add useState here
 import axios from "axios";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { API_BASE_URL } from "./apiConfig";
 
 const UserForm = ({
   selectedUser,
@@ -15,9 +16,7 @@ const UserForm = ({
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(
-          "http://192.168.0.194:8080/RedGroupTask/users/"
-        );
+        const response = await axios.get(API_BASE_URL + "users/");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { API_BASE_URL } from "./apiConfig";
 
 const CustomForm = ({ selectedUser, fetchTasks }) => {
   const [task, setTask] = useState("");
@@ -15,9 +16,7 @@ const CustomForm = ({ selectedUser, fetchTasks }) => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await axios.get(
-          "http://192.168.0.194:8080/RedGroupTask/activities/"
-        );
+        const response = await axios.get(API_BASE_URL + "activities/");
         setActivities(response.data);
       } catch (error) {
         console.error("Error fetching activities:", error);
@@ -29,39 +28,43 @@ const CustomForm = ({ selectedUser, fetchTasks }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://192.168.0.194:8080/RedGroupTask/api/journal/", {
+      const startDateObj = new Date(startDate);
+      const startTimeObj = new Date(`${startDate}T${startTime}`);
+      const endTimeObj = new Date(`${startDate}T${endTime}`);
+
+      const formData = {
         userId: selectedUser,
         activityId: task,
         comment: comment,
         start: {
           date: {
-            year: new Date(startDate).getFullYear(),
-            month: new Date(startDate).getMonth() + 1,
-            day: new Date(startDate).getDate(),
+            year: startDateObj.getFullYear(),
+            month: startDateObj.getMonth() + 1,
+            day: startDateObj.getDate(),
           },
           time: {
-            hour: parseInt(startTime.split(":")[0]),
-            minute: parseInt(startTime.split(":")[1]),
+            hour: startTimeObj.getHours(),
+            minute: startTimeObj.getMinutes(),
             second: 0,
           },
         },
         end: {
           date: {
-            year: new Date(startDate).getFullYear(),
-            month: new Date(startDate).getMonth() + 1,
-            day: new Date(startDate).getDate(),
+            year: startDateObj.getFullYear(),
+            month: startDateObj.getMonth() + 1,
+            day: startDateObj.getDate(),
           },
           time: {
-            hour: parseInt(endTime.split(":")[0]),
-            minute: parseInt(endTime.split(":")[1]),
+            hour: endTimeObj.getHours(),
+            minute: endTimeObj.getMinutes(),
             second: 0,
           },
         },
-      });
+      };
+
+      await axios.post(`${API_BASE_URL}journal/`, formData);
 
       fetchTasks();
-
-      // Optionally, you can fetchTasks or perform any other action after successful submission
     } catch (error) {
       console.error("Error submitting task:", error);
     }
