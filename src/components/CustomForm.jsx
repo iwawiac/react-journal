@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
-const CustomForm = ({ selectedUser }) => {
+const CustomForm = ({ selectedUser, fetchTasks }) => {
   const [task, setTask] = useState("");
   const [startDate, setStartDate] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -28,7 +29,7 @@ const CustomForm = ({ selectedUser }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8080/RedGroupTask/api/journal/", {
+      await axios.post("http://192.168.0.194:8080/RedGroupTask/api/journal/", {
         userId: selectedUser,
         activityId: task,
         comment: comment,
@@ -57,6 +58,9 @@ const CustomForm = ({ selectedUser }) => {
           },
         },
       });
+
+      fetchTasks();
+
       // Optionally, you can fetchTasks or perform any other action after successful submission
     } catch (error) {
       console.error("Error submitting task:", error);

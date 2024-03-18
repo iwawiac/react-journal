@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import axios from "axios";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
@@ -32,7 +33,7 @@ const tasksArray = [
   },
 ];
 
-const TaskItem = ({ task, onDelete }) => {
+const TaskItem = ({ task, onDelete, selectedUser, fetchTasks }) => {
   const [editMode, setEditMode] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
 
@@ -44,12 +45,13 @@ const TaskItem = ({ task, onDelete }) => {
     } catch (error) {
       console.error("Error deleting task:", error);
     }
+    fetchTasks();
   };
 
   const handleUpdate = async () => {
     try {
       const updatedTask = {
-        userId: 1,
+        userId: selectedUser,
         activityId: editedTask.activityId,
         comment: editedTask.comment,
         start: {
@@ -81,12 +83,14 @@ const TaskItem = ({ task, onDelete }) => {
       };
 
       await axios.put(
-        `http://localhost:8080/RedGroupTask/api/journal/${task.id}`,
+        `http://192.168.0.194:8080/RedGroupTask/api/journal/${task.id}`,
         updatedTask
       );
 
       console.log("Updated task:", updatedTask);
+      // window.location.reload();
       setEditMode(false);
+      fetchTasks();
     } catch (error) {
       console.error("Error updating task:", error);
     }
@@ -119,12 +123,9 @@ const TaskItem = ({ task, onDelete }) => {
             }
           />
         ) : (
-          `${String(editedTask.start.date.year)}-${String(
-            editedTask.start.date.month
-          ).padStart(2, "0")}-${String(editedTask.start.date.day).padStart(
-            2,
-            "0"
-          )}`
+          `${String(task.start.date.year)}-${String(
+            task.start.date.month
+          ).padStart(2, "0")}-${String(task.start.date.day).padStart(2, "0")}`
         )}
       </td>
       <td>
@@ -141,8 +142,8 @@ const TaskItem = ({ task, onDelete }) => {
             }
           />
         ) : (
-          `${String(editedTask.start.time.hour).padStart(2, "0")}:${String(
-            editedTask.start.time.minute
+          `${String(task.start.time.hour).padStart(2, "0")}:${String(
+            task.start.time.minute
           ).padStart(2, "0")}`
         )}
       </td>
@@ -160,8 +161,8 @@ const TaskItem = ({ task, onDelete }) => {
             }
           />
         ) : (
-          `${String(editedTask.end.time.hour).padStart(2, "0")}:${String(
-            editedTask.end.time.minute
+          `${String(task.end.time.hour).padStart(2, "0")}:${String(
+            task.end.time.minute
           ).padStart(2, "0")}`
         )}
       </td>

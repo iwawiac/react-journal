@@ -60,10 +60,6 @@ const UserForm = ({
           Select Date
         </label>
       </div>
-
-      <button className="btn" aria-label="Add User" type="submit">
-        <PlusIcon className="h-6 w-6 text-blue-500" />
-      </button>
     </form>
   );
 };

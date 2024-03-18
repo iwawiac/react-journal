@@ -55,7 +55,12 @@ function App() {
       <header>
         <h1>List of activities</h1>
       </header>
-      <TaskList tasks={tasks} activities={activities} />
+      <TaskList
+        tasks={tasks}
+        activities={activities}
+        selectedUser={selectedUser}
+        fetchTasks={fetchTasks}
+      />
     </div>
   );
 }

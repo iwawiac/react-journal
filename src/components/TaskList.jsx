@@ -5,12 +5,17 @@ import TaskItem from "./TaskItem";
 
 import styles from "./TaskList.module.css";
 
-const TaskList = ({ tasks }) => {
+const TaskList = ({ tasks, selectedUser, fetchTasks }) => {
   return (
     <table className={styles.tasks}>
       <tbody>
         {tasks.map((task) => (
-          <TaskItem key={task.id} task={task} />
+          <TaskItem
+            key={task.id}
+            task={task}
+            selectedUser={selectedUser}
+            fetchTasks={fetchTasks}
+          />
         ))}
       </tbody>
     </table>
