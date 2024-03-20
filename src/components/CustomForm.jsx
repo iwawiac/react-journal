@@ -16,7 +16,7 @@ const CustomForm = ({ selectedUser, fetchTasks }) => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await axios.get(API_BASE_URL + "activities/");
+        const response = await axios.get(API_BASE_URL + "activities");
         setActivities(response.data);
       } catch (error) {
         console.error("Error fetching activities:", error);
@@ -62,7 +62,7 @@ const CustomForm = ({ selectedUser, fetchTasks }) => {
         },
       };
 
-      await axios.post(`${API_BASE_URL}journal/`, formData);
+      await axios.post(`${API_BASE_URL}journal`, formData);
 
       fetchTasks();
     } catch (error) {
